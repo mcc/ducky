@@ -89,7 +89,7 @@ static const uint8_t PROGMEM endpoint_config_table[] = {
 // spec and relevant portions of any USB class specifications!
 
 
-static uint8_t PROGMEM device_descriptor[] = {
+static const uint8_t PROGMEM device_descriptor[] = {
 	18,					// bLength
 	1,					// bDescriptorType
 	0x00, 0x02,				// bcdUSB
@@ -107,7 +107,7 @@ static uint8_t PROGMEM device_descriptor[] = {
 };
 
 // Keyboard Protocol 1, HID 1.11 spec, Appendix B, page 59-60
-static uint8_t PROGMEM keyboard_hid_report_desc[] = {
+static const uint8_t PROGMEM keyboard_hid_report_desc[] = {
         0x05, 0x01,          // Usage Page (Generic Desktop),
         0x09, 0x06,          // Usage (Keyboard),
         0xA1, 0x01,          // Collection (Application),
@@ -144,7 +144,7 @@ static uint8_t PROGMEM keyboard_hid_report_desc[] = {
 
 #define CONFIG1_DESC_SIZE        (9+9+9+7)
 #define KEYBOARD_HID_DESC_OFFSET (9+9)
-static uint8_t PROGMEM config1_descriptor[CONFIG1_DESC_SIZE] = {
+static const uint8_t PROGMEM config1_descriptor[CONFIG1_DESC_SIZE] = {
 	// configuration descriptor, USB spec 9.6.3, page 264-266, Table 9-10
 	9, 					// bLength;
 	2,					// bDescriptorType;
@@ -191,17 +191,17 @@ struct usb_string_descriptor_struct {
 	uint8_t bDescriptorType;
 	int16_t wString[];
 };
-static struct usb_string_descriptor_struct PROGMEM string0 = {
+static const struct usb_string_descriptor_struct PROGMEM string0 = {
 	4,
 	3,
 	{0x0409}
 };
-static struct usb_string_descriptor_struct PROGMEM string1 = {
+static const struct usb_string_descriptor_struct PROGMEM string1 = {
 	sizeof(STR_MANUFACTURER),
 	3,
 	STR_MANUFACTURER
 };
-static struct usb_string_descriptor_struct PROGMEM string2 = {
+static const struct usb_string_descriptor_struct PROGMEM string2 = {
 	sizeof(STR_PRODUCT),
 	3,
 	STR_PRODUCT
@@ -209,7 +209,7 @@ static struct usb_string_descriptor_struct PROGMEM string2 = {
 
 // This table defines which descriptor data is sent for each specific
 // request from the host (in wValue and wIndex).
-static struct descriptor_list_struct {
+static const struct descriptor_list_struct {
 	uint16_t	wValue;
 	uint16_t	wIndex;
 	const uint8_t	*addr;
@@ -593,53 +593,56 @@ void usb_keyboard_send_single(char c) {
    if (c > 'A' - 1 && c < 'Z')
    {
       usb_keyboard_press(c - 'A' + 4, KEY_SHIFT);
+      return;
    }
       else if (c > 'a' - 1 && c < 'z')
    {
       usb_keyboard_press(c - 'a' + 4, 0);
+      return;
    }
    else if (c > '1' - 1 && c <= '9')
    {
       usb_keyboard_press(c - '1' + 30, 0);
+      return;
    }
    switch (c)
    {
-      case '0': usb_keyboard_press(KEY_0,0);
-      case '!': usb_keyboard_press(KEY_1,KEY_SHIFT);
-      case '@': usb_keyboard_press(KEY_2,KEY_SHIFT);
-      case '#': usb_keyboard_press(KEY_3,KEY_SHIFT);
-      case '$': usb_keyboard_press(KEY_4,KEY_SHIFT);
-      case '%': usb_keyboard_press(KEY_5,KEY_SHIFT);
-      case '^': usb_keyboard_press(KEY_6,KEY_SHIFT);
-      case '&': usb_keyboard_press(KEY_7,KEY_SHIFT);
-      case '*': usb_keyboard_press(KEY_8,KEY_SHIFT);
-      case '(': usb_keyboard_press(KEY_9,KEY_SHIFT);
-      case ')': usb_keyboard_press(KEY_0,KEY_SHIFT);
-      case '	': usb_keyboard_press(KEY_TAB,0);
-      case ' ': usb_keyboard_press(KEY_SPACE,0);
-      case '-': usb_keyboard_press(KEY_MINUS,0);
-      case '_': usb_keyboard_press(KEY_MINUS,KEY_SHIFT);
-      case '=': usb_keyboard_press(KEY_EQUAL,0);
-      case '+': usb_keyboard_press(KEY_EQUAL,KEY_SHIFT);
-      case '[': usb_keyboard_press(KEY_LEFT_BRACE,0);
-      case '{': usb_keyboard_press(KEY_LEFT_BRACE,KEY_SHIFT);
-      case ']': usb_keyboard_press(KEY_RIGHT_BRACE,0);
-      case '}': usb_keyboard_press(KEY_RIGHT_BRACE,KEY_SHIFT);
-      case '\\': usb_keyboard_press(KEY_BACKSLASH,0);
-      case '|': usb_keyboard_press(KEY_BACKSLASH,KEY_SHIFT);
-      case ';': usb_keyboard_press(KEY_SEMICOLON,0);
-      case ':': usb_keyboard_press(KEY_SEMICOLON,KEY_SHIFT);
-      case '\'': usb_keyboard_press(KEY_QUOTE,0);
-      case '"': usb_keyboard_press(KEY_QUOTE,KEY_SHIFT);
-      case '`': usb_keyboard_press(KEY_TILDE,0);
-      case '~': usb_keyboard_press(KEY_TILDE,KEY_SHIFT);
-      case ',': usb_keyboard_press(KEY_COMMA,0);
-      case '<': usb_keyboard_press(KEY_COMMA,KEY_SHIFT);
-      case '.': usb_keyboard_press(KEY_PERIOD,0);
-      case '>': usb_keyboard_press(KEY_PERIOD,KEY_SHIFT);
-      case '/': usb_keyboard_press(KEY_SLASH,0);
-      case '?': usb_keyboard_press(KEY_SLASH,KEY_SHIFT);
-      case '\n': usb_keyboard_press(KEY_ENTER,0);
+      case '0': usb_keyboard_press(KEY_0,0);break;
+      case '!': usb_keyboard_press(KEY_1,KEY_SHIFT);break;
+      case '@': usb_keyboard_press(KEY_2,KEY_SHIFT);break;
+      case '#': usb_keyboard_press(KEY_3,KEY_SHIFT);break;
+      case '$': usb_keyboard_press(KEY_4,KEY_SHIFT);break;
+      case '%': usb_keyboard_press(KEY_5,KEY_SHIFT);break;
+      case '^': usb_keyboard_press(KEY_6,KEY_SHIFT);break;
+      case '&': usb_keyboard_press(KEY_7,KEY_SHIFT);break;
+      case '*': usb_keyboard_press(KEY_8,KEY_SHIFT);break;
+      case '(': usb_keyboard_press(KEY_9,KEY_SHIFT);break;
+      case ')': usb_keyboard_press(KEY_0,KEY_SHIFT);break;
+      case '	': usb_keyboard_press(KEY_TAB,0);break;
+      case ' ': usb_keyboard_press(KEY_SPACE,0);break;
+      case '-': usb_keyboard_press(KEY_MINUS,0);break;
+      case '_': usb_keyboard_press(KEY_MINUS,KEY_SHIFT);break;
+      case '=': usb_keyboard_press(KEY_EQUAL,0);break;
+      case '+': usb_keyboard_press(KEY_EQUAL,KEY_SHIFT);break;
+      case '[': usb_keyboard_press(KEY_LEFT_BRACE,0);break;
+      case '{': usb_keyboard_press(KEY_LEFT_BRACE,KEY_SHIFT);break;
+      case ']': usb_keyboard_press(KEY_RIGHT_BRACE,0);break;
+      case '}': usb_keyboard_press(KEY_RIGHT_BRACE,KEY_SHIFT);break;
+      case '\\': usb_keyboard_press(KEY_BACKSLASH,0);break;
+      case '|': usb_keyboard_press(KEY_BACKSLASH,KEY_SHIFT);break;
+      case ';': usb_keyboard_press(KEY_SEMICOLON,0);break;
+      case ':': usb_keyboard_press(KEY_SEMICOLON,KEY_SHIFT);break;
+      case '\'': usb_keyboard_press(KEY_QUOTE,0);break;
+      case '"': usb_keyboard_press(KEY_QUOTE,KEY_SHIFT);break;
+      case '`': usb_keyboard_press(KEY_TILDE,0);break;
+      case '~': usb_keyboard_press(KEY_TILDE,KEY_SHIFT);break;
+      case ',': usb_keyboard_press(KEY_COMMA,0);break;
+      case '<': usb_keyboard_press(KEY_COMMA,KEY_SHIFT);break;
+      case '.': usb_keyboard_press(KEY_PERIOD,0);break;
+      case '>': usb_keyboard_press(KEY_PERIOD,KEY_SHIFT);break;
+      case '/': usb_keyboard_press(KEY_SLASH,0);break;
+      case '?': usb_keyboard_press(KEY_SLASH,KEY_SHIFT);break;
+      case '\n': usb_keyboard_press(KEY_ENTER,0);break;
    }
 }
 

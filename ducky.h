@@ -16,18 +16,24 @@ void AppleCommandRun_s(const char *sc);
 #define WindowsCommandRun(sc) WindowsCommandRun_s(PSTR(sc))
 #define AppleCommandRun(sc) AppleCommandRun_s(PSTR(sc))
 
-void blinkLEDLoop(int ms_on,int ms_off){
+void my_delay_ms(int ms){
+  while(ms--){
+    _delay_ms(1);
+  }
+}
+
+void blinkLEDLoop(int ms_on, int ms_off){
    while (1)
    {
       LED_ON;
-      _delay_ms(ms_on);
+      my_delay_ms(ms_on);
       LED_OFF;
-      _delay_ms(ms_off);
+      my_delay_ms(ms_off);
    };
    LED_OFF; // this should never happen
 };
 
-void blinkLED(int count){
+void blinkLED(const int count){
    int i;
    for (i=0;i<count;i++)
    {
@@ -39,14 +45,14 @@ void blinkLED(int count){
    LED_OFF;
 };
 
-void blinkLEDAlt(int count,int ms_on,int ms_off){
+void blinkLEDAlt(const int count,const int ms_on,const int ms_off){
    int i;
    for (i=0;i<count;i++)
    {
       LED_ON;
-      _delay_ms(ms_on);
+      my_delay_ms(ms_on);
       LED_OFF;
-      _delay_ms(ms_off);
+      my_delay_ms(ms_off);
    };
    LED_OFF;
 };

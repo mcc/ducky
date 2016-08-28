@@ -36,7 +36,7 @@ void main(void)
    _delay_ms(1000);
 
 // DO STUFF ------------------------------------------------------------
-   LinuxPayload();
+   WindowsPayload();
 
 // blink light when done -----------------------------------------------
    blinkLEDLoop(500,500);
